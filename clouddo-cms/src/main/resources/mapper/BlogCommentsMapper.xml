@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.clouddoexam.dao.BlogCommentsDao">
+
+	<select id="get" resultType="com.bootdo.clouddoexam.domain.BlogCommentsDO">
+		select `id`,`topic_id`,`topic_type`,`content`,`from_uid`,`to_uid`,`avatar` from cms_blog_comments where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.clouddoexam.domain.BlogCommentsDO">
+		select `id`,`topic_id`,`topic_type`,`content`,`from_uid`,`to_uid`,`avatar` from cms_blog_comments
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="topicId != null and topicId != ''"> and topic_id = #{topicId} </if>
+		  		  <if test="topicType != null and topicType != ''"> and topic_type = #{topicType} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="fromUid != null and fromUid != ''"> and from_uid = #{fromUid} </if>
+		  		  <if test="toUid != null and toUid != ''"> and to_uid = #{toUid} </if>
+		  		  <if test="avatar != null and avatar != ''"> and avatar = #{avatar} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from cms_blog_comments
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="topicId != null and topicId != ''"> and topic_id = #{topicId} </if>
+		  		  <if test="topicType != null and topicType != ''"> and topic_type = #{topicType} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="fromUid != null and fromUid != ''"> and from_uid = #{fromUid} </if>
+		  		  <if test="toUid != null and toUid != ''"> and to_uid = #{toUid} </if>
+		  		  <if test="avatar != null and avatar != ''"> and avatar = #{avatar} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.clouddoexam.domain.BlogCommentsDO">
+		insert into cms_blog_comments
+		(
+			`id`, 
+			`topic_id`, 
+			`topic_type`, 
+			`content`, 
+			`from_uid`, 
+			`to_uid`, 
+			`avatar`
+		)
+		values
+		(
+			#{id}, 
+			#{topicId}, 
+			#{topicType}, 
+			#{content}, 
+			#{fromUid}, 
+			#{toUid}, 
+			#{avatar}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.clouddoexam.domain.BlogCommentsDO">
+		update cms_blog_comments 
+		<set>
+			<if test="topicId != null">`topic_id` = #{topicId}, </if>
+			<if test="topicType != null">`topic_type` = #{topicType}, </if>
+			<if test="content != null">`content` = #{content}, </if>
+			<if test="fromUid != null">`from_uid` = #{fromUid}, </if>
+			<if test="toUid != null">`to_uid` = #{toUid}, </if>
+			<if test="avatar != null">`avatar` = #{avatar}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from cms_blog_comments where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from cms_blog_comments where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="listbyblogid" resultType="com.bootdo.clouddoexam.domain.BlogCommentsDO">
+		select t1.content,t1.avatar ,t1.id ,t2.title from cms_blog_comments t1,cms_blog t2 where  t1.topic_id=t2.cid and t2.cid=#{id}
+	</select>
+	<insert id="saveComments" parameterType="com.bootdo.clouddoexam.domain.BlogCommentsDO">
+		insert into cms_blog_comments
+		(
+
+			`topic_id`,
+			`topic_type`,
+			`content`,
+			`from_uid`,
+			`to_uid`
+
+		)
+		values
+		(
+
+			#{topicId},
+			#{topicType},
+			#{content},
+			#{fromUid},
+			#{toUid}
+
+		)
+	</insert>
+</mapper>

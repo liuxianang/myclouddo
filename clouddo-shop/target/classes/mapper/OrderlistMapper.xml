@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.clouddoshop.dao.OrderlistDao">
+
+	<select id="get" resultType="com.bootdo.clouddoshop.domain.OrderlistDO">
+		select `orderId`,`userId`,`productId`,`productName`,`productPrice`,`productNum`,`productImg`,`totalPrice`,`streetName`,`postName`,`postCode`,`tel`,`itemPrice`,`discount`,`shipPrice`,`freightRisk`,`createDate`,`ifPay` from orderlist where orderId = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.clouddoshop.domain.OrderlistDO">
+		select `orderId`,`userId`,`productId`,`productName`,`productPrice`,`productNum`,`productImg`,`totalPrice`,`streetName`,`postName`,`postCode`,`tel`,`itemPrice`,`discount`,`shipPrice`,`freightRisk`,`createDate`,`ifPay` from orderlist
+        <where>  
+		  		  <if test="orderid != null and orderid != ''"> and orderId = #{orderid} </if>
+		  		  <if test="userid != null and userid != ''"> and userId = #{userid} </if>
+		  		  <if test="productid != null and productid != ''"> and productId = #{productid} </if>
+		  		  <if test="productname != null and productname != ''"> and productName = #{productname} </if>
+		  		  <if test="productprice != null and productprice != ''"> and productPrice = #{productprice} </if>
+		  		  <if test="productnum != null and productnum != ''"> and productNum = #{productnum} </if>
+		  		  <if test="productimg != null and productimg != ''"> and productImg = #{productimg} </if>
+		  		  <if test="totalprice != null and totalprice != ''"> and totalPrice = #{totalprice} </if>
+		  		  <if test="streetname != null and streetname != ''"> and streetName = #{streetname} </if>
+		  		  <if test="postname != null and postname != ''"> and postName = #{postname} </if>
+		  		  <if test="postcode != null and postcode != ''"> and postCode = #{postcode} </if>
+		  		  <if test="tel != null and tel != ''"> and tel = #{tel} </if>
+		  		  <if test="itemprice != null and itemprice != ''"> and itemPrice = #{itemprice} </if>
+		  		  <if test="discount != null and discount != ''"> and discount = #{discount} </if>
+		  		  <if test="shipprice != null and shipprice != ''"> and shipPrice = #{shipprice} </if>
+		  		  <if test="freightrisk != null and freightrisk != ''"> and freightRisk = #{freightrisk} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		  <if test="ifpay != null and ifpay != ''"> and ifPay = #{ifpay} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by orderId desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from orderlist
+		 <where>  
+		  		  <if test="orderid != null and orderid != ''"> and orderId = #{orderid} </if>
+		  		  <if test="userid != null and userid != ''"> and userId = #{userid} </if>
+		  		  <if test="productid != null and productid != ''"> and productId = #{productid} </if>
+		  		  <if test="productname != null and productname != ''"> and productName = #{productname} </if>
+		  		  <if test="productprice != null and productprice != ''"> and productPrice = #{productprice} </if>
+		  		  <if test="productnum != null and productnum != ''"> and productNum = #{productnum} </if>
+		  		  <if test="productimg != null and productimg != ''"> and productImg = #{productimg} </if>
+		  		  <if test="totalprice != null and totalprice != ''"> and totalPrice = #{totalprice} </if>
+		  		  <if test="streetname != null and streetname != ''"> and streetName = #{streetname} </if>
+		  		  <if test="postname != null and postname != ''"> and postName = #{postname} </if>
+		  		  <if test="postcode != null and postcode != ''"> and postCode = #{postcode} </if>
+		  		  <if test="tel != null and tel != ''"> and tel = #{tel} </if>
+		  		  <if test="itemprice != null and itemprice != ''"> and itemPrice = #{itemprice} </if>
+		  		  <if test="discount != null and discount != ''"> and discount = #{discount} </if>
+		  		  <if test="shipprice != null and shipprice != ''"> and shipPrice = #{shipprice} </if>
+		  		  <if test="freightrisk != null and freightrisk != ''"> and freightRisk = #{freightrisk} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createDate = #{createdate} </if>
+		  		  <if test="ifpay != null and ifpay != ''"> and ifPay = #{ifpay} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.clouddoshop.domain.OrderlistDO">
+		insert into orderlist
+		(
+			`orderId`, 
+			`userId`, 
+			`productId`, 
+			`productName`, 
+			`productPrice`, 
+			`productNum`, 
+			`productImg`, 
+			`totalPrice`, 
+			`streetName`, 
+			`postName`, 
+			`postCode`, 
+			`tel`, 
+			`itemPrice`, 
+			`discount`, 
+			`shipPrice`, 
+			`freightRisk`, 
+			`createDate`, 
+			`ifPay`
+		)
+		values
+		(
+			#{orderid}, 
+			#{userid}, 
+			#{productid}, 
+			#{productname}, 
+			#{productprice}, 
+			#{productnum}, 
+			#{productimg}, 
+			#{totalprice}, 
+			#{streetname}, 
+			#{postname}, 
+			#{postcode}, 
+			#{tel}, 
+			#{itemprice}, 
+			#{discount}, 
+			#{shipprice}, 
+			#{freightrisk}, 
+			#{createdate}, 
+			#{ifpay}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.clouddoshop.domain.OrderlistDO">
+		update orderlist 
+		<set>
+			<if test="userid != null">`userId` = #{userid}, </if>
+			<if test="productid != null">`productId` = #{productid}, </if>
+			<if test="productname != null">`productName` = #{productname}, </if>
+			<if test="productprice != null">`productPrice` = #{productprice}, </if>
+			<if test="productnum != null">`productNum` = #{productnum}, </if>
+			<if test="productimg != null">`productImg` = #{productimg}, </if>
+			<if test="totalprice != null">`totalPrice` = #{totalprice}, </if>
+			<if test="streetname != null">`streetName` = #{streetname}, </if>
+			<if test="postname != null">`postName` = #{postname}, </if>
+			<if test="postcode != null">`postCode` = #{postcode}, </if>
+			<if test="tel != null">`tel` = #{tel}, </if>
+			<if test="itemprice != null">`itemPrice` = #{itemprice}, </if>
+			<if test="discount != null">`discount` = #{discount}, </if>
+			<if test="shipprice != null">`shipPrice` = #{shipprice}, </if>
+			<if test="freightrisk != null">`freightRisk` = #{freightrisk}, </if>
+			<if test="createdate != null">`createDate` = #{createdate}, </if>
+			<if test="ifpay != null">`ifPay` = #{ifpay}</if>
+		</set>
+		where orderId = #{orderid}
+	</update>
+	
+	<delete id="remove">
+		delete from orderlist where orderId = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from orderlist where orderId in 
+		<foreach item="orderid" collection="array" open="(" separator="," close=")">
+			#{orderid}
+		</foreach>
+	</delete>
+
+</mapper>

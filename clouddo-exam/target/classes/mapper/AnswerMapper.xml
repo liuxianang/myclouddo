@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.clouddoexam.dao.AnswerDao">
+
+	<select id="get" resultType="com.bootdo.clouddoexam.domain.AnswerDO">
+		select `id`,`test_paperid`,`test_papername`,`studentid`,`studentname`,`single_choice_answer`,`singleYorN`,`singleScore`,`multiple_choice_answer`,`multipleYorN`,`multipleScore`,`short_answer1`,`answer1YorN`,`answer1Score`,`short_answer2`,`answer2YorN`,`answer2Score`,`short_answer3`,`answer3YorN`,`answer3Score`,`short_answer4`,`answer4YorN`,`answer4Score`,`short_answer5`,`answer5YorN`,`answer5Score`,`totalScore`,`state` from student_answer where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.clouddoexam.domain.AnswerDO">
+		select `id`,`test_paperid`,`test_papername`,`studentid`,`studentname`,`single_choice_answer`,`singleYorN`,`singleScore`,`multiple_choice_answer`,`multipleYorN`,`multipleScore`,`short_answer1`,`answer1YorN`,`answer1Score`,`short_answer2`,`answer2YorN`,`answer2Score`,`short_answer3`,`answer3YorN`,`answer3Score`,`short_answer4`,`answer4YorN`,`answer4Score`,`short_answer5`,`answer5YorN`,`answer5Score`,`totalScore`,`state` from student_answer
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="testPaperid != null and testPaperid != ''"> and test_paperid = #{testPaperid} </if>
+		  		  <if test="testPapername != null and testPapername != ''"> and test_papername = #{testPapername} </if>
+		  		  <if test="studentid != null and studentid != ''"> and studentid = #{studentid} </if>
+		  		  <if test="studentname != null and studentname != ''"> and studentname = #{studentname} </if>
+		  		  <if test="singleChoiceAnswer != null and singleChoiceAnswer != ''"> and single_choice_answer = #{singleChoiceAnswer} </if>
+		  		  <if test="singleyorn != null and singleyorn != ''"> and singleYorN = #{singleyorn} </if>
+		  		  <if test="singlescore != null and singlescore != ''"> and singleScore = #{singlescore} </if>
+		  		  <if test="multipleChoiceAnswer != null and multipleChoiceAnswer != ''"> and multiple_choice_answer = #{multipleChoiceAnswer} </if>
+		  		  <if test="multipleyorn != null and multipleyorn != ''"> and multipleYorN = #{multipleyorn} </if>
+		  		  <if test="multiplescore != null and multiplescore != ''"> and multipleScore = #{multiplescore} </if>
+		  		  <if test="shortAnswer1 != null and shortAnswer1 != ''"> and short_answer1 = #{shortAnswer1} </if>
+		  		  <if test="answer1yorn != null and answer1yorn != ''"> and answer1YorN = #{answer1yorn} </if>
+		  		  <if test="answer1score != null and answer1score != ''"> and answer1Score = #{answer1score} </if>
+		  		  <if test="shortAnswer2 != null and shortAnswer2 != ''"> and short_answer2 = #{shortAnswer2} </if>
+		  		  <if test="answer2yorn != null and answer2yorn != ''"> and answer2YorN = #{answer2yorn} </if>
+		  		  <if test="answer2score != null and answer2score != ''"> and answer2Score = #{answer2score} </if>
+		  		  <if test="shortAnswer3 != null and shortAnswer3 != ''"> and short_answer3 = #{shortAnswer3} </if>
+		  		  <if test="answer3yorn != null and answer3yorn != ''"> and answer3YorN = #{answer3yorn} </if>
+		  		  <if test="answer3score != null and answer3score != ''"> and answer3Score = #{answer3score} </if>
+		  		  <if test="shortAnswer4 != null and shortAnswer4 != ''"> and short_answer4 = #{shortAnswer4} </if>
+		  		  <if test="answer4yorn != null and answer4yorn != ''"> and answer4YorN = #{answer4yorn} </if>
+		  		  <if test="answer4score != null and answer4score != ''"> and answer4Score = #{answer4score} </if>
+		  		  <if test="shortAnswer5 != null and shortAnswer5 != ''"> and short_answer5 = #{shortAnswer5} </if>
+		  		  <if test="answer5yorn != null and answer5yorn != ''"> and answer5YorN = #{answer5yorn} </if>
+		  		  <if test="answer5score != null and answer5score != ''"> and answer5Score = #{answer5score} </if>
+		  		  <if test="totalscore != null and totalscore != ''"> and totalScore = #{totalscore} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from student_answer
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="testPaperid != null and testPaperid != ''"> and test_paperid = #{testPaperid} </if>
+		  		  <if test="testPapername != null and testPapername != ''"> and test_papername = #{testPapername} </if>
+		  		  <if test="studentid != null and studentid != ''"> and studentid = #{studentid} </if>
+		  		  <if test="studentname != null and studentname != ''"> and studentname = #{studentname} </if>
+		  		  <if test="singleChoiceAnswer != null and singleChoiceAnswer != ''"> and single_choice_answer = #{singleChoiceAnswer} </if>
+		  		  <if test="singleyorn != null and singleyorn != ''"> and singleYorN = #{singleyorn} </if>
+		  		  <if test="singlescore != null and singlescore != ''"> and singleScore = #{singlescore} </if>
+		  		  <if test="multipleChoiceAnswer != null and multipleChoiceAnswer != ''"> and multiple_choice_answer = #{multipleChoiceAnswer} </if>
+		  		  <if test="multipleyorn != null and multipleyorn != ''"> and multipleYorN = #{multipleyorn} </if>
+		  		  <if test="multiplescore != null and multiplescore != ''"> and multipleScore = #{multiplescore} </if>
+		  		  <if test="shortAnswer1 != null and shortAnswer1 != ''"> and short_answer1 = #{shortAnswer1} </if>
+		  		  <if test="answer1yorn != null and answer1yorn != ''"> and answer1YorN = #{answer1yorn} </if>
+		  		  <if test="answer1score != null and answer1score != ''"> and answer1Score = #{answer1score} </if>
+		  		  <if test="shortAnswer2 != null and shortAnswer2 != ''"> and short_answer2 = #{shortAnswer2} </if>
+		  		  <if test="answer2yorn != null and answer2yorn != ''"> and answer2YorN = #{answer2yorn} </if>
+		  		  <if test="answer2score != null and answer2score != ''"> and answer2Score = #{answer2score} </if>
+		  		  <if test="shortAnswer3 != null and shortAnswer3 != ''"> and short_answer3 = #{shortAnswer3} </if>
+		  		  <if test="answer3yorn != null and answer3yorn != ''"> and answer3YorN = #{answer3yorn} </if>
+		  		  <if test="answer3score != null and answer3score != ''"> and answer3Score = #{answer3score} </if>
+		  		  <if test="shortAnswer4 != null and shortAnswer4 != ''"> and short_answer4 = #{shortAnswer4} </if>
+		  		  <if test="answer4yorn != null and answer4yorn != ''"> and answer4YorN = #{answer4yorn} </if>
+		  		  <if test="answer4score != null and answer4score != ''"> and answer4Score = #{answer4score} </if>
+		  		  <if test="shortAnswer5 != null and shortAnswer5 != ''"> and short_answer5 = #{shortAnswer5} </if>
+		  		  <if test="answer5yorn != null and answer5yorn != ''"> and answer5YorN = #{answer5yorn} </if>
+		  		  <if test="answer5score != null and answer5score != ''"> and answer5Score = #{answer5score} </if>
+		  		  <if test="totalscore != null and totalscore != ''"> and totalScore = #{totalscore} </if>
+		  		  <if test="state != null and state != ''"> and state = #{state} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.clouddoexam.domain.AnswerDO" useGeneratedKeys="true" keyProperty="id">
+		insert into student_answer
+		(
+			`test_paperid`, 
+			`test_papername`, 
+			`studentid`, 
+			`studentname`, 
+			`single_choice_answer`, 
+			`singleYorN`, 
+			`singleScore`, 
+			`multiple_choice_answer`, 
+			`multipleYorN`, 
+			`multipleScore`, 
+			`short_answer1`, 
+			`answer1YorN`, 
+			`answer1Score`, 
+			`short_answer2`, 
+			`answer2YorN`, 
+			`answer2Score`, 
+			`short_answer3`, 
+			`answer3YorN`, 
+			`answer3Score`, 
+			`short_answer4`, 
+			`answer4YorN`, 
+			`answer4Score`, 
+			`short_answer5`, 
+			`answer5YorN`, 
+			`answer5Score`, 
+			`totalScore`
+
+		)
+		values
+		(
+			#{testPaperid}, 
+			#{testPapername}, 
+			#{studentid}, 
+			#{studentname}, 
+			#{singleChoiceAnswer}, 
+			#{singleyorn}, 
+			#{singlescore}, 
+			#{multipleChoiceAnswer}, 
+			#{multipleyorn}, 
+			#{multiplescore}, 
+			#{shortAnswer1}, 
+			#{answer1yorn}, 
+			#{answer1score}, 
+			#{shortAnswer2}, 
+			#{answer2yorn}, 
+			#{answer2score}, 
+			#{shortAnswer3}, 
+			#{answer3yorn}, 
+			#{answer3score}, 
+			#{shortAnswer4}, 
+			#{answer4yorn}, 
+			#{answer4score}, 
+			#{shortAnswer5}, 
+			#{answer5yorn}, 
+			#{answer5score}, 
+			#{totalscore}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.clouddoexam.domain.AnswerDO">
+		update student_answer 
+		<set>
+			<if test="testPaperid != null">`test_paperid` = #{testPaperid}, </if>
+			<if test="testPapername != null">`test_papername` = #{testPapername}, </if>
+			<if test="studentid != null">`studentid` = #{studentid}, </if>
+			<if test="studentname != null">`studentname` = #{studentname}, </if>
+			<if test="singleChoiceAnswer != null">`single_choice_answer` = #{singleChoiceAnswer}, </if>
+			<if test="singleyorn != null">`singleYorN` = #{singleyorn}, </if>
+			<if test="singlescore != null">`singleScore` = #{singlescore}, </if>
+			<if test="multipleChoiceAnswer != null">`multiple_choice_answer` = #{multipleChoiceAnswer}, </if>
+			<if test="multipleyorn != null">`multipleYorN` = #{multipleyorn}, </if>
+			<if test="multiplescore != null">`multipleScore` = #{multiplescore}, </if>
+			<if test="shortAnswer1 != null">`short_answer1` = #{shortAnswer1}, </if>
+			<if test="answer1yorn != null">`answer1YorN` = #{answer1yorn}, </if>
+			<if test="answer1score != null">`answer1Score` = #{answer1score}, </if>
+			<if test="shortAnswer2 != null">`short_answer2` = #{shortAnswer2}, </if>
+			<if test="answer2yorn != null">`answer2YorN` = #{answer2yorn}, </if>
+			<if test="answer2score != null">`answer2Score` = #{answer2score}, </if>
+			<if test="shortAnswer3 != null">`short_answer3` = #{shortAnswer3}, </if>
+			<if test="answer3yorn != null">`answer3YorN` = #{answer3yorn}, </if>
+			<if test="answer3score != null">`answer3Score` = #{answer3score}, </if>
+			<if test="shortAnswer4 != null">`short_answer4` = #{shortAnswer4}, </if>
+			<if test="answer4yorn != null">`answer4YorN` = #{answer4yorn}, </if>
+			<if test="answer4score != null">`answer4Score` = #{answer4score}, </if>
+			<if test="shortAnswer5 != null">`short_answer5` = #{shortAnswer5}, </if>
+			<if test="answer5yorn != null">`answer5YorN` = #{answer5yorn}, </if>
+			<if test="answer5score != null">`answer5Score` = #{answer5score}, </if>
+			<if test="totalscore != null">`totalScore` = #{totalscore}, </if>
+			<if test="state != null">`state` = #{state}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from student_answer where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from student_answer where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

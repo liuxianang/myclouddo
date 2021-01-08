@@ -1,0 +1,19 @@
+import * as API from './'
+
+export default {
+	list: params => {
+	return API.GET('/api-exam/${classname}', params)
+},
+add: params => {
+	return API.POST(`/api-exam/${classname}/save`, params)
+},
+edit: params => {
+	return API.PUT(`/api-exam/${classname}/update`, params)
+},
+getblogid:params =>{
+	return API.GET('/api-cms/blog/blogid',params)
+},
+remove: params=>{
+	return API.DELETE('/api-exam/${classname}', params)
+}
+}

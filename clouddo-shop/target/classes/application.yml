@@ -1,0 +1,31 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8001/eureka/
+server:
+  port: 8021
+spring:
+  application:
+    name: api-shop
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/cloudshop?useUnicode=true&characterEncoding=utf8&useSSL=true
+    username: root
+    password: 123456
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 100Mb
+  cloud:
+    refresh:
+      refreshable: none
+mybatis:
+  mapper-locations: mapper/**Mapper.xml
+  configuration:
+      map-underscore-to-camel-case: true
+      #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+app:
+  filePath: c:/var/uploaded_files/
+  pre: /files

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.clouddoshop.dao.UserDao">
+
+	<select id="get" resultType="com.bootdo.clouddoshop.domain.UserDO">
+		select `id`,`userId`,`userName`,`userPwd`,`myPhoto` from user where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.clouddoshop.domain.UserDO">
+		select `id`,`userId`,`userName`,`userPwd`,`myPhoto` from user
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userid != null and userid != ''"> and userId = #{userid} </if>
+		  		  <if test="username != null and username != ''"> and userName = #{username} </if>
+		  		  <if test="userpwd != null and userpwd != ''"> and userPwd = #{userpwd} </if>
+		  		  <if test="myphoto != null and myphoto != ''"> and myPhoto = #{myphoto} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from user
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userid != null and userid != ''"> and userId = #{userid} </if>
+		  		  <if test="username != null and username != ''"> and userName = #{username} </if>
+		  		  <if test="userpwd != null and userpwd != ''"> and userPwd = #{userpwd} </if>
+		  		  <if test="myphoto != null and myphoto != ''"> and myPhoto = #{myphoto} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.clouddoshop.domain.UserDO" useGeneratedKeys="true" keyProperty="id">
+		insert into user
+		(
+			`userId`, 
+			`userName`, 
+			`userPwd`, 
+			`myPhoto`
+		)
+		values
+		(
+			#{userid}, 
+			#{username}, 
+			#{userpwd}, 
+			#{myphoto}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.clouddoshop.domain.UserDO">
+		update user 
+		<set>
+			<if test="userid != null">`userId` = #{userid}, </if>
+			<if test="username != null">`userName` = #{username}, </if>
+			<if test="userpwd != null">`userPwd` = #{userpwd}, </if>
+			<if test="myphoto != null">`myPhoto` = #{myphoto}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from user where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from user where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="getbyuserid" resultType="com.bootdo.clouddoshop.domain.UserDO">
+		select `id`,`userId`,`userName`,`userPwd`,`myPhoto` from user where userId = #{value}
+	</select>
+</mapper>

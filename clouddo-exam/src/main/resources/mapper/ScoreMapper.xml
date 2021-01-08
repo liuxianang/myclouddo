@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.clouddoexam.dao.ScoreDao">
+
+	<select id="get" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+		select `Student_ID`,`student_Name`,`stydent_Grade`,`chemistry`,`history`,`geography`,`government`,`mathematics`,`physical`,`biology`,`English`,`Chinese` from student_score where Student_ID = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+		select `Student_ID`,`student_Name`,`stydent_Grade`,`chemistry`,`history`,`geography`,`government`,`mathematics`,`physical`,`biology`,`English`,`Chinese` from student_score
+        <where>  
+		  		  <if test="studentId != null and studentId != ''"> and Student_ID = #{studentId} </if>
+		  		  <if test="studentName != null and studentName != ''"> and student_Name = #{studentName} </if>
+		  		  <if test="stydentGrade != null and stydentGrade != ''"> and stydent_Grade = #{stydentGrade} </if>
+		  		  <if test="chemistry != null and chemistry != ''"> and chemistry = #{chemistry} </if>
+		  		  <if test="history != null and history != ''"> and history = #{history} </if>
+		  		  <if test="geography != null and geography != ''"> and geography = #{geography} </if>
+		  		  <if test="government != null and government != ''"> and government = #{government} </if>
+		  		  <if test="mathematics != null and mathematics != ''"> and mathematics = #{mathematics} </if>
+		  		  <if test="physical != null and physical != ''"> and physical = #{physical} </if>
+		  		  <if test="biology != null and biology != ''"> and biology = #{biology} </if>
+		  		  <if test="english != null and english != ''"> and English = #{english} </if>
+		  		  <if test="chinese != null and chinese != ''"> and Chinese = #{chinese} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by Student_ID desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from student_score
+		 <where>  
+		  		  <if test="studentId != null and studentId != ''"> and Student_ID = #{studentId} </if>
+		  		  <if test="studentName != null and studentName != ''"> and student_Name = #{studentName} </if>
+		  		  <if test="stydentGrade != null and stydentGrade != ''"> and stydent_Grade = #{stydentGrade} </if>
+		  		  <if test="chemistry != null and chemistry != ''"> and chemistry = #{chemistry} </if>
+		  		  <if test="history != null and history != ''"> and history = #{history} </if>
+		  		  <if test="geography != null and geography != ''"> and geography = #{geography} </if>
+		  		  <if test="government != null and government != ''"> and government = #{government} </if>
+		  		  <if test="mathematics != null and mathematics != ''"> and mathematics = #{mathematics} </if>
+		  		  <if test="physical != null and physical != ''"> and physical = #{physical} </if>
+		  		  <if test="biology != null and biology != ''"> and biology = #{biology} </if>
+		  		  <if test="english != null and english != ''"> and English = #{english} </if>
+		  		  <if test="chinese != null and chinese != ''"> and Chinese = #{chinese} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.clouddoexam.domain.ScoreDO">
+		insert into student_score
+		(
+			`Student_ID`, 
+			`student_Name`, 
+			`stydent_Grade`, 
+			`chemistry`, 
+			`history`, 
+			`geography`, 
+			`government`, 
+			`mathematics`, 
+			`physical`, 
+			`biology`, 
+			`English`, 
+			`Chinese`
+		)
+		values
+		(
+			#{studentId}, 
+			#{studentName}, 
+			#{stydentGrade}, 
+			#{chemistry}, 
+			#{history}, 
+			#{geography}, 
+			#{government}, 
+			#{mathematics}, 
+			#{physical}, 
+			#{biology}, 
+			#{english}, 
+			#{chinese}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.clouddoexam.domain.ScoreDO">
+		update student_score 
+		<set>
+			<if test="studentName != null">`student_Name` = #{studentName}, </if>
+			<if test="stydentGrade != null">`stydent_Grade` = #{stydentGrade}, </if>
+			<if test="chemistry != null">`chemistry` = #{chemistry}, </if>
+			<if test="history != null">`history` = #{history}, </if>
+			<if test="geography != null">`geography` = #{geography}, </if>
+			<if test="government != null">`government` = #{government}, </if>
+			<if test="mathematics != null">`mathematics` = #{mathematics}, </if>
+			<if test="physical != null">`physical` = #{physical}, </if>
+			<if test="biology != null">`biology` = #{biology}, </if>
+			<if test="english != null">`English` = #{english}, </if>
+			<if test="chinese != null">`Chinese` = #{chinese},</if>
+			<if test="total_score != null">`total_score` = #{total_score},</if>
+			<if test="total_score_rank != null">`total_score_rank` = #{total_score_rank},</if>
+			<if test="chemistry_rank != null">`chemistry_rank` = #{chemistry_rank},</if>
+			<if test="history_rank != null">`history_rank` = #{history_rank},</if>
+			<if test="geography_rank != null">`geography_rank` = #{geography_rank},</if>
+			<if test="government_rank != null">`government_rank` = #{government_rank},</if>
+			<if test="mathematics_rank != null">`mathematics_rank` = #{mathematics_rank},</if>
+			<if test="physical_rank != null">`physical_rank` = #{physical_rank},</if>
+			<if test="biology_rank != null">`biology_rank` = #{biology_rank},</if>
+			<if test="English_rank != null">`English_rank` = #{English_rank},</if>
+			<if test="Chinese_rank != null">`Chinese_rank` = #{Chinese_rank}</if>
+		</set>
+		where Student_ID = #{studentId}
+	</update>
+	
+	<delete id="remove">
+		delete from student_score where Student_ID = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from student_score where Student_ID in 
+		<foreach item="studentId" collection="array" open="(" separator="," close=")">
+			#{studentId}
+		</foreach>
+	</delete>
+	<select id="listall" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+		select `Student_ID`,`student_Name`,`stydent_Grade`,`chemistry`,`history`,`geography`,`government`,`mathematics`,`physical`,`biology`,`English`,`Chinese` from student_score
+		 where
+		 stydent_Grade like CONCAT('%高',#{param1},'(',#{param2},')班%') order by ${param3} desc
+	</select>
+	<select id="listallscore" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+		select * from student_score
+	</select>
+	<select id="listallscorerank" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+
+		<set>@rownum = 0;
+		</set>
+		<set>
+			@rownum1 = 0;
+		</set>
+	(select  (@rownum :=@rownum+1) as rownum ,t.* from (select* from student_score order by total_score desc)  t where t.stydent_Grade like  "%高二%" ) union all
+	(select  (@rownum1 :=@rownum1+1) as rownum ,t.* from (select* from student_score order by total_score desc) t where t.stydent_Grade like  "%高一%" )
+
+	</select>
+	<select id="listallchemistryrank" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+
+		<set>@rownum = 0;
+		</set>
+		<set>
+			@rownum1 = 0;
+		</set>
+		(select  (@rownum :=@rownum+1) as rownum ,t.* from (select* from student_score order by chemistry desc)  t where t.stydent_Grade like  "%高二%" ) union all
+		(select  (@rownum1 :=@rownum1+1) as rownum ,t.* from (select* from student_score order by chemistry desc) t where t.stydent_Grade like  "%高一%" )
+
+	</select>
+	<select id="listallhistoryrank" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+
+		<set>@rownum = 0;
+		</set>
+		<set>
+			@rownum1 = 0;
+		</set>
+		(select  (@rownum :=@rownum+1) as rownum ,t.* from (select* from student_score order by history desc)  t where t.stydent_Grade like  "%高二%" ) union all
+		(select  (@rownum1 :=@rownum1+1) as rownum ,t.* from (select* from student_score order by history desc) t where t.stydent_Grade like  "%高一%" )
+
+	</select>
+	<select id="listallgeographyrank" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+
+		<set>@rownum = 0;
+		</set>
+		<set>
+			@rownum1 = 0;
+		</set>
+		(select  (@rownum :=@rownum+1) as rownum ,t.* from (select* from student_score order by geography desc)  t where t.stydent_Grade like  "%高二%" ) union all
+		(select  (@rownum1 :=@rownum1+1) as rownum ,t.* from (select* from student_score order by geography desc) t where t.stydent_Grade like  "%高一%" )
+
+	</select>
+	<select id="listallgovernmentrank" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+
+		<set>@rownum = 0;
+		</set>
+		<set>
+			@rownum1 = 0;
+		</set>
+		(select  (@rownum :=@rownum+1) as rownum ,t.* from (select* from student_score order by government desc)  t where t.stydent_Grade like  "%高二%" ) union all
+		(select  (@rownum1 :=@rownum1+1) as rownum ,t.* from (select* from student_score order by government desc) t where t.stydent_Grade like  "%高一%" )
+
+	</select>
+	<select id="listallmathematicsrank" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+
+		<set>@rownum = 0;
+		</set>
+		<set>
+			@rownum1 = 0;
+		</set>
+		(select  (@rownum :=@rownum+1) as rownum ,t.* from (select* from student_score order by mathematics desc)  t where t.stydent_Grade like  "%高二%" ) union all
+		(select  (@rownum1 :=@rownum1+1) as rownum ,t.* from (select* from student_score order by mathematics desc) t where t.stydent_Grade like  "%高一%" )
+
+	</select>
+	<select id="listallphysicalrank" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+
+		<set>@rownum = 0;
+		</set>
+		<set>
+			@rownum1 = 0;
+		</set>
+		(select  (@rownum :=@rownum+1) as rownum ,t.* from (select* from student_score order by physical desc)  t where t.stydent_Grade like  "%高二%" ) union all
+		(select  (@rownum1 :=@rownum1+1) as rownum ,t.* from (select* from student_score order by physical desc) t where t.stydent_Grade like  "%高一%" )
+
+	</select>
+	<select id="listallbiologyrank" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+
+		<set>@rownum = 0;
+		</set>
+		<set>
+			@rownum1 = 0;
+		</set>
+		(select  (@rownum :=@rownum+1) as rownum ,t.* from (select* from student_score order by biology desc)  t where t.stydent_Grade like  "%高二%" ) union all
+		(select  (@rownum1 :=@rownum1+1) as rownum ,t.* from (select* from student_score order by biology desc) t where t.stydent_Grade like  "%高一%" )
+
+	</select>
+	<select id="listallEnglishrank" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+
+		<set>@rownum = 0;
+		</set>
+		<set>
+			@rownum1 = 0;
+		</set>
+		(select  (@rownum :=@rownum+1) as rownum ,t.* from (select* from student_score order by English desc)  t where t.stydent_Grade like  "%高二%" ) union all
+		(select  (@rownum1 :=@rownum1+1) as rownum ,t.* from (select* from student_score order by English desc) t where t.stydent_Grade like  "%高一%" )
+
+	</select>
+	<select id="listallChineserank" resultType="com.bootdo.clouddoexam.domain.ScoreDO">
+
+		<set>@rownum = 0;
+		</set>
+		<set>
+			@rownum1 = 0;
+		</set>
+		(select  (@rownum :=@rownum+1) as rownum ,t.* from (select* from student_score order by Chinese desc)  t where t.stydent_Grade like  "%高二%" ) union all
+		(select  (@rownum1 :=@rownum1+1) as rownum ,t.* from (select* from student_score order by Chinese desc) t where t.stydent_Grade like  "%高一%" )
+
+	</select>
+</mapper>

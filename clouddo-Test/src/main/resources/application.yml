@@ -1,0 +1,35 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8001/eureka/
+server:
+  port: 8222
+spring:
+  profiles:
+    active: dev
+  application:
+    name: api-test
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/clouddo?useUnicode=true&characterEncoding=utf8&useSSL=true
+    username: root
+    password: 123456
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 100Mb
+  cloud:
+    refresh:
+      refreshable: none
+mybatis:
+  mapper-locations: mapper/**Mapper.xml
+  configuration:
+      map-underscore-to-camel-case: true
+app:
+  filePath: c:/var/uploaded_files/
+  pre: /files
+author:
+  name: wyh
+  age: 30

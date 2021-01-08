@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.clouddoapp.dao.AppnotifyDao">
+
+	<select id="get" resultType="com.bootdo.clouddoapp.domain.AppnotifyDO">
+		select `id`,`title`,`content`,`icon` from appnotify where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.clouddoapp.domain.AppnotifyDO">
+		select `id`,`title`,`content`,`icon` from appnotify
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="icon != null and icon != ''"> and icon = #{icon} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<select id="listall" resultType="com.bootdo.clouddoapp.domain.AppnotifyDO">
+		select `id`,`title`,`content`,`icon` from appnotify
+	</select>
+ 	<select id="count" resultType="int">
+		select count(*) from appnotify
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="icon != null and icon != ''"> and icon = #{icon} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.clouddoapp.domain.AppnotifyDO">
+		insert into appnotify
+		(
+			`id`, 
+			`title`, 
+			`content`, 
+			`icon`
+		)
+		values
+		(
+			#{id}, 
+			#{title}, 
+			#{content}, 
+			#{icon}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.clouddoapp.domain.AppnotifyDO">
+		update appnotify 
+		<set>
+			<if test="title != null">`title` = #{title}, </if>
+			<if test="content != null">`content` = #{content}, </if>
+			<if test="icon != null">`icon` = #{icon}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from appnotify where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from appnotify where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.clouddoshop.dao.GoodsDao">
+
+	<select id="get" resultType="com.bootdo.clouddoshop.domain.GoodsDO">
+		select `id`,`productId`,`productName`,`productPrice`,`checked`,`productNum`,`productImg`,`sub_title`,`limit_num`,`desc`,`descImg`,`productDetails` from goods where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.clouddoshop.domain.GoodsDO">
+		select `id`,`productId`,`productName`,`productPrice`,`checked`,`productNum`,`productImg`,`sub_title`,`limit_num`,`desc`,`descImg`,`productDetails` from goods
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="productid != null and productid != ''"> and productId = #{productid} </if>
+		  		  <if test="productname != null and productname != ''"> and productName = #{productname} </if>
+		  		  <if test="productprice != null and productprice != ''"> and productPrice = #{productprice} </if>
+		  		  <if test="checked != null and checked != ''"> and checked = #{checked} </if>
+		  		  <if test="productnum != null and productnum != ''"> and productNum = #{productnum} </if>
+		  		  <if test="productimg != null and productimg != ''"> and productImg = #{productimg} </if>
+		  		  <if test="subTitle != null and subTitle != ''"> and sub_title = #{subTitle} </if>
+		  		  <if test="limitNum != null and limitNum != ''"> and limit_num = #{limitNum} </if>
+		  		  <if test="desc != null and desc != ''"> and desc = #{desc} </if>
+		  		  <if test="descimg != null and descimg != ''"> and descImg = #{descimg} </if>
+		  		  <if test="productdetails != null and productdetails != ''"> and productDetails = #{productdetails} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from goods
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="productid != null and productid != ''"> and productId = #{productid} </if>
+		  		  <if test="productname != null and productname != ''"> and productName = #{productname} </if>
+		  		  <if test="productprice != null and productprice != ''"> and productPrice = #{productprice} </if>
+		  		  <if test="checked != null and checked != ''"> and checked = #{checked} </if>
+		  		  <if test="productnum != null and productnum != ''"> and productNum = #{productnum} </if>
+		  		  <if test="productimg != null and productimg != ''"> and productImg = #{productimg} </if>
+		  		  <if test="subTitle != null and subTitle != ''"> and sub_title = #{subTitle} </if>
+		  		  <if test="limitNum != null and limitNum != ''"> and limit_num = #{limitNum} </if>
+		  		  <if test="desc != null and desc != ''"> and desc = #{desc} </if>
+		  		  <if test="descimg != null and descimg != ''"> and descImg = #{descimg} </if>
+		  		  <if test="productdetails != null and productdetails != ''"> and productDetails = #{productdetails} </if>
+			 <if test="Pricelevel != null and Pricelevel != ''">
+				 <if test="Pricelevel =='all'.toString()">and productPrice &gt; '0'</if>
+				 <if test="Pricelevel =='0'.toString()">and productPrice &gt; '0' and  productPrice &lt;= '500'</if>
+				 <if test="Pricelevel =='1'.toString()">and productPrice &gt; '500' and  productPrice &lt;= '1000'</if>
+				 <if test="Pricelevel =='2'.toString()">and productPrice &gt; '1000' and  productPrice &lt;= '2000'</if>
+				 <if test="Pricelevel =='3'.toString()">and productPrice &gt; '2000' and  productPrice &lt;= '5000'</if>
+				 <if test="Pricelevel =='4'.toString()">and productPrice &gt; '5000' and  productPrice &lt;= '10000'</if>
+			 </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.clouddoshop.domain.GoodsDO" useGeneratedKeys="true" keyProperty="id">
+		insert into goods
+		(
+			`productId`, 
+			`productName`, 
+			`productPrice`, 
+			`checked`, 
+			`productNum`, 
+			`productImg`, 
+			`sub_title`, 
+			`limit_num`, 
+			`desc`, 
+			`descImg`, 
+			`productDetails`
+		)
+		values
+		(
+			#{productid}, 
+			#{productname}, 
+			#{productprice}, 
+			#{checked}, 
+			#{productnum}, 
+			#{productimg}, 
+			#{subTitle}, 
+			#{limitNum}, 
+			#{desc}, 
+			#{descimg}, 
+			#{productdetails}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.clouddoshop.domain.GoodsDO">
+		update goods 
+		<set>
+			<if test="productid != null">`productId` = #{productid}, </if>
+			<if test="productname != null">`productName` = #{productname}, </if>
+			<if test="productprice != null">`productPrice` = #{productprice}, </if>
+			<if test="checked != null">`checked` = #{checked}, </if>
+			<if test="productnum != null">`productNum` = #{productnum}, </if>
+			<if test="productimg != null">`productImg` = #{productimg}, </if>
+			<if test="subTitle != null">`sub_title` = #{subTitle}, </if>
+			<if test="limitNum != null">`limit_num` = #{limitNum}, </if>
+			<if test="desc != null">`desc` = #{desc}, </if>
+			<if test="descimg != null">`descImg` = #{descimg}, </if>
+			<if test="productdetails != null">`productDetails` = #{productdetails}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from goods where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from goods where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="getDetails" resultType="com.bootdo.clouddoshop.domain.GoodsDO">
+		select `id`,`productId`,`productName`,`productPrice`,`checked`,`productNum`,`productImg`,`sub_title`,`limit_num`,`desc`,`descImg`,`productDetails` from goods where productId = #{value}
+	</select>
+
+	<select id="shopGoods" resultType="com.bootdo.clouddoshop.domain.GoodsDO">
+		select `id`,`productId`,`productName`,`productPrice`,`checked`,`productNum`,`productImg`,`sub_title`,`limit_num`,`desc`,`descImg`,`productDetails` from goods
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="productid != null and productid != ''"> and productId = #{productid} </if>
+			<if test="productname != null and productname != ''"> and productName = #{productname} </if>
+			<if test="productprice != null and productprice != ''"> and productPrice = #{productprice} </if>
+			<if test="checked != null and checked != ''"> and checked = #{checked} </if>
+			<if test="productnum != null and productnum != ''"> and productNum = #{productnum} </if>
+			<if test="productimg != null and productimg != ''"> and productImg = #{productimg} </if>
+			<if test="subTitle != null and subTitle != ''"> and sub_title = #{subTitle} </if>
+			<if test="limitNum != null and limitNum != ''"> and limit_num = #{limitNum} </if>
+			<if test="desc != null and desc != ''"> and desc = #{desc} </if>
+			<if test="descimg != null and descimg != ''"> and descImg = #{descimg} </if>
+			<if test="productdetails != null and productdetails != ''"> and productDetails = #{productdetails} </if>
+			<if test="Pricelevel != null and Pricelevel != ''">
+				<if test="Pricelevel =='all'.toString()">and productPrice &gt; '0'</if>
+				<if test="Pricelevel =='0'.toString()">and productPrice &gt; '0' and  productPrice &lt;= '500'</if>
+				<if test="Pricelevel =='1'.toString()">and productPrice &gt; '500' and  productPrice &lt;= '1000'</if>
+				<if test="Pricelevel =='2'.toString()">and productPrice &gt; '1000' and  productPrice &lt;= '2000'</if>
+				<if test="Pricelevel =='3'.toString()">and productPrice &gt; '2000' and  productPrice &lt;= '5000'</if>
+				<if test="Pricelevel =='4'.toString()">and productPrice &gt; '5000' and  productPrice &lt;= '10000'</if>
+			</if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.clouddoexam.dao.QuestionDao">
+
+	<select id="get" resultType="com.bootdo.clouddoexam.domain.QuestionDO">
+		select `id`,`type`,`content`,`score`,`answer`,`analysis`,`option_a`,`option_b`,`option_c`,`option_d`,`title`,`simple_title` from question where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.clouddoexam.domain.QuestionDO">
+		select `id`,`type`,`content`,`score`,`answer`,`analysis`,`option_a`,`option_b`,`option_c`,`option_d`,`title`,`simple_title` from question
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="score != null and score != ''"> and score = #{score} </if>
+		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
+		  		  <if test="analysis != null and analysis != ''"> and analysis = #{analysis} </if>
+		  		  <if test="optionA != null and optionA != ''"> and option_a = #{optionA} </if>
+		  		  <if test="optionB != null and optionB != ''"> and option_b = #{optionB} </if>
+		  		  <if test="optionC != null and optionC != ''"> and option_c = #{optionC} </if>
+		  		  <if test="optionD != null and optionD != ''"> and option_d = #{optionD} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="simpleTitle != null and simpleTitle != ''"> and simple_title = #{simpleTitle} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from question
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="score != null and score != ''"> and score = #{score} </if>
+		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
+		  		  <if test="analysis != null and analysis != ''"> and analysis = #{analysis} </if>
+		  		  <if test="optionA != null and optionA != ''"> and option_a = #{optionA} </if>
+		  		  <if test="optionB != null and optionB != ''"> and option_b = #{optionB} </if>
+		  		  <if test="optionC != null and optionC != ''"> and option_c = #{optionC} </if>
+		  		  <if test="optionD != null and optionD != ''"> and option_d = #{optionD} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="simpleTitle != null and simpleTitle != ''"> and simple_title = #{simpleTitle} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.clouddoexam.domain.QuestionDO">
+		insert into question
+		(
+
+			`type`, 
+			`content`, 
+			`score`, 
+			`answer`, 
+			`analysis`, 
+			`option_a`, 
+			`option_b`, 
+			`option_c`, 
+			`option_d`, 
+			`title`, 
+			`simple_title`
+		)
+		values
+		(
+
+			#{type}, 
+			#{content}, 
+			#{score}, 
+			#{answer}, 
+			#{analysis}, 
+			#{optionA}, 
+			#{optionB}, 
+			#{optionC}, 
+			#{optionD}, 
+			#{title}, 
+			#{simpleTitle}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.clouddoexam.domain.QuestionDO">
+		update question 
+		<set>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="content != null">`content` = #{content}, </if>
+			<if test="score != null">`score` = #{score}, </if>
+			<if test="answer != null">`answer` = #{answer}, </if>
+			<if test="analysis != null">`analysis` = #{analysis}, </if>
+			<if test="optionA != null">`option_a` = #{optionA}, </if>
+			<if test="optionB != null">`option_b` = #{optionB}, </if>
+			<if test="optionC != null">`option_c` = #{optionC}, </if>
+			<if test="optionD != null">`option_d` = #{optionD}, </if>
+			<if test="title != null">`title` = #{title}, </if>
+			<if test="simpleTitle != null">`simple_title` = #{simpleTitle}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from question where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from question where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="findlist" resultType="com.bootdo.clouddoexam.domain.QuestionDO">
+		select *  from question where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+	<select id="findall" resultType="com.bootdo.clouddoexam.domain.QuestionDO">
+		select *  from question
+	</select>
+	<select id="findtree" resultType="com.bootdo.clouddoexam.domain.treeQus">
+		select distinct (simple_title) as title , simple_title  as `key`  from question
+	</select>
+</mapper>

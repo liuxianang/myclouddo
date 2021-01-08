@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.clouddoexam.dao.PaperDao">
+
+	<select id="get" resultType="com.bootdo.clouddoexam.domain.PaperDO">
+		select `id`,`name`,`description`,`cover`,`author`,`created`,`start_time`,`end_time`,`subject_name`,`publish`,`type`,`remark`,`questionall_id` from paper where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.clouddoexam.domain.PaperDO">
+		select `id`,`name`,`description`,`cover`,`author`,`created`,`start_time`,`end_time`,`subject_name`,`publish`,`type`,`remark`,`questionall_id` from paper
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="description != null and description != ''"> and description = #{description} </if>
+		  		  <if test="cover != null and cover != ''"> and cover = #{cover} </if>
+		  		  <if test="author != null and author != ''"> and author = #{author} </if>
+		  		  <if test="created != null and created != ''"> and created = #{created} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
+		  		  <if test="subjectName != null and subjectName != ''"> and subject_name = #{subjectName} </if>
+		  		  <if test="publish != null and publish != ''"> and publish = #{publish} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		  		  <if test="questionallId != null and questionallId != ''"> and questionall_id = #{questionallId} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from paper
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="description != null and description != ''"> and description = #{description} </if>
+		  		  <if test="cover != null and cover != ''"> and cover = #{cover} </if>
+		  		  <if test="author != null and author != ''"> and author = #{author} </if>
+		  		  <if test="created != null and created != ''"> and created = #{created} </if>
+		  		  <if test="startTime != null and startTime != ''"> and start_time = #{startTime} </if>
+		  		  <if test="endTime != null and endTime != ''"> and end_time = #{endTime} </if>
+		  		  <if test="subjectName != null and subjectName != ''"> and subject_name = #{subjectName} </if>
+		  		  <if test="publish != null and publish != ''"> and publish = #{publish} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		  		  <if test="questionallId != null and questionallId != ''"> and questionall_id = #{questionallId} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.clouddoexam.domain.PaperDO" useGeneratedKeys="true" keyProperty="id">
+		insert into paper
+		(
+			`name`, 
+			`description`, 
+			`cover`, 
+			`author`, 
+			`created`, 
+			`start_time`, 
+			`end_time`, 
+			`subject_name`, 
+			`publish`, 
+			`type`, 
+			`remark`, 
+			`questionall_id`
+		)
+		values
+		(
+			#{name}, 
+			#{description}, 
+			#{cover}, 
+			#{author}, 
+			#{created}, 
+			#{startTime}, 
+			#{endTime}, 
+			#{subjectName}, 
+			#{publish}, 
+			#{type}, 
+			#{remark}, 
+			#{questionallId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.clouddoexam.domain.PaperDO">
+		update paper 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="description != null">`description` = #{description}, </if>
+			<if test="cover != null">`cover` = #{cover}, </if>
+			<if test="author != null">`author` = #{author}, </if>
+			<if test="created != null">`created` = #{created}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="endTime != null">`end_time` = #{endTime}, </if>
+			<if test="subjectName != null">`subject_name` = #{subjectName}, </if>
+			<if test="publish != null">`publish` = #{publish}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="questionallId != null">`questionall_id` = #{questionallId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from paper where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from paper where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

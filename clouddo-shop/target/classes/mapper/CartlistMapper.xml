@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.clouddoshop.dao.CartlistDao">
+
+	<select id="get" resultType="com.bootdo.clouddoshop.domain.CartlistDO">
+		select `cartId`,`userId`,`productId`,`productName`,`productPrice`,`checked`,`productNum`,`productImg`,`totalPrice` from cartlist where cartId = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.clouddoshop.domain.CartlistDO">
+		select `cartId`,`userId`,`productId`,`productName`,`productPrice`,`checked`,`productNum`,`productImg`,`totalPrice` from cartlist
+        <where>  
+		  		  <if test="cartid != null and cartid != ''"> and cartId = #{cartid} </if>
+		  		  <if test="userid != null and userid != ''"> and userId = #{userid} </if>
+		  		  <if test="productid != null and productid != ''"> and productId = #{productid} </if>
+		  		  <if test="productname != null and productname != ''"> and productName = #{productname} </if>
+		  		  <if test="productprice != null and productprice != ''"> and productPrice = #{productprice} </if>
+		  		  <if test="checked != null and checked != ''"> and checked = #{checked} </if>
+		  		  <if test="productnum != null and productnum != ''"> and productNum = #{productnum} </if>
+		  		  <if test="productimg != null and productimg != ''"> and productImg = #{productimg} </if>
+		  		  <if test="totalprice != null and totalprice != ''"> and totalPrice = #{totalprice} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by cartId desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from cartlist
+		 <where>  
+		  		  <if test="cartid != null and cartid != ''"> and cartId = #{cartid} </if>
+		  		  <if test="userid != null and userid != ''"> and userId = #{userid} </if>
+		  		  <if test="productid != null and productid != ''"> and productId = #{productid} </if>
+		  		  <if test="productname != null and productname != ''"> and productName = #{productname} </if>
+		  		  <if test="productprice != null and productprice != ''"> and productPrice = #{productprice} </if>
+		  		  <if test="checked != null and checked != ''"> and checked = #{checked} </if>
+		  		  <if test="productnum != null and productnum != ''"> and productNum = #{productnum} </if>
+		  		  <if test="productimg != null and productimg != ''"> and productImg = #{productimg} </if>
+		  		  <if test="totalprice != null and totalprice != ''"> and totalPrice = #{totalprice} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.clouddoshop.domain.CartlistDO" useGeneratedKeys="true" keyProperty="cartid">
+		insert into cartlist
+		(
+			`userId`, 
+			`productId`, 
+			`productName`, 
+			`productPrice`, 
+			`checked`, 
+			`productNum`, 
+			`productImg`, 
+			`totalPrice`
+		)
+		values
+		(
+			#{userid}, 
+			#{productid}, 
+			#{productname}, 
+			#{productprice}, 
+			#{checked}, 
+			#{productnum}, 
+			#{productimg}, 
+			#{totalprice}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.clouddoshop.domain.CartlistDO">
+		update cartlist 
+		<set>
+			<if test="userid != null">`userId` = #{userid}, </if>
+			<if test="productid != null">`productId` = #{productid}, </if>
+			<if test="productname != null">`productName` = #{productname}, </if>
+			<if test="productprice != null">`productPrice` = #{productprice}, </if>
+			<if test="checked != null">`checked` = #{checked}, </if>
+			<if test="productnum != null">`productNum` = #{productnum}, </if>
+			<if test="productimg != null">`productImg` = #{productimg}, </if>
+			<if test="totalprice != null">`totalPrice` = #{totalprice}</if>
+		</set>
+		where cartId = #{cartid}
+	</update>
+	
+	<delete id="remove">
+		delete from cartlist where cartId = #{value}
+	</delete>
+	<delete id="removebyuserid">
+		delete from cartlist where userId = #{value}
+	</delete>
+	<delete id="batchRemove">
+		delete from cartlist where cartId in 
+		<foreach item="cartid" collection="array" open="(" separator="," close=")">
+			#{cartid}
+		</foreach>
+	</delete>
+
+</mapper>
